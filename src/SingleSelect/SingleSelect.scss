@@ -1,4 +1,85 @@
-//scss stub for singleselect
-.SingleSelect{
+$font: Verdana;
+$fade: ease-out 0.5s;
+/*I used http://colorsafe.co/ to find accessible colors based off of color1.*/
+$color1: #001160; //Blue 
+$color2: #7aa228; //Green
+$color3: lighten($color1, 75%); //lighten color1 for a background
+$color4: lighten($color2, 15%); //lighten color2 for a border
 
+//scss stub for singleselect
+.SingleSelect {
+    font-family: $font;
+    background-color: white;
+    margin: auto;
+    margin-top: 10em;
+    width: 50%;
+    max-width: 30em; //this is specific to this project
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+html{
+    background-color: $color3;
+    background: url("../mathematics-572273_1920.jpg") no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    border-bottom: .2em solid $color3;
+    margin: 0;
+    height: 100%;
+}
+
+.question{
+    color: white;
+    text-align: center;
+    background-color: $color2;
+    margin: auto;
+    width: 100%;
+    vertical-align:middle;
+    padding: 2em 0;
+    border-bottom: .2em solid $color4;
+}
+
+.answerButtons {
+    margin: auto;
+    width: 50%;
+    padding: 2em;
+}
+
+.answer{
+    font-family: $font;
+    font-size: 20px;
+    padding: 1.75em 2em;
+    margin: .5em;
+    border: .1em solid $color1;
+    color: $color1;
+    background-color: $color3;
+    display: inline;
+    cursor: pointer;
+    box-shadow: inset $color1;
+    -webkit-transition: $fade ;
+    -moz-transition: $fade;
+}
+
+//With the transition properties in .answer, this creates the border animation on hover.
+.answer:hover{
+    box-shadow: inset 0 0 0 .5em $color1;
+}
+
+.correct {
+}
+
+.feedback {
+}
+
+@media (max-width: 950px){
+    .SingleSelect{
+        max-width: 15em; //This keeps the buttons responsive while eliminating an awkward div size and button alignment while resizing the page.
+        margin-top: 2em;
+    }
 }
