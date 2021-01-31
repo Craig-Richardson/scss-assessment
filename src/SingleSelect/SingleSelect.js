@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './SingleSelect.scss'
+import Modal from 'react-modal'
 
 const SingleSelect = props => {
 
@@ -30,6 +31,7 @@ const SingleSelect = props => {
 
     const selectedOption = props.data.options[selected]
 
+
     return (
         <div className={`SingleSelect`}>
             <div className={'question'}>
@@ -51,13 +53,13 @@ const SingleSelect = props => {
                   enough with React yet to really make the necessary changes. https://dev.to/achowba/building-a-modal-in-react-15hg
                   I understand the idea that I need to add a class to set the display status by sending a true/false 
                   variable to the top div below this. I can see how to add the class by the provided correct/incorrect
-                  class name code, but am not sure how pass the information yet. I need to spend more time studying React.
-                  I spent a couple of hours trying to figure this out, but am going to move on.
+                  class name code, but am not sure how pass the information yet. There is a syntax or something I don't 
+                  know yet about how to define and toggle boolean in React. 
                   
                 */
 
-                <div className={`modal ${selectedOption.correct ? 'correct' : 'incorrect'}`}>
-                    <div className={'modalContent'}>
+                <div className={`modal`} >
+                    <div className={` ${selectedOption.correct ? 'correct' : 'incorrect'}`}>
                         <h1>
                             {selectedOption.correct ?
                                 props.data.feedback.correct.header
