@@ -15,10 +15,12 @@ import './MultiSelect.scss'
     The generic feedback shown in the data is binary - either you got it 100% correct and get the correct feedback, or you don't. 
 */
 
+
+
 const MultiSelect = props => {
     return (
         <div className={`MultiSelect`}>
-            multi-select implementation goes here
+            
         </div>
     )
 }

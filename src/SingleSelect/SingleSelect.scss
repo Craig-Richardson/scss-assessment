@@ -1,32 +1,35 @@
-/*There are a few things I'm using here, like mixins or the color modules, that aren't exactly 
-  required or necessary for something this size, but I wanted to use to as much of SASS as I 
-  could. */
+//I tried to include as many SASS tools as I could instead of a straight CSS, even if it wasn't necessary, like the mixin and zindex/modifier. 
 
 $font: Verdana, sans-serif;
 $fade: ease-out 0.5s;
-/*I used http://colorsafe.co/ to find accessible colors based off of color1.*/
-$color1: #001160; //Blue 
-$color2: #7aa228; //Green
-$color3: lighten($color1, 75%); //lighten color1 for a background
-$color4: lighten($color2, 15%); //lighten color2 for a border
+$zindex: 1000;
+
+$color1: #001160;               //Blue              //I used http://colorsafe.co/ to find accessible colors based off of color1.
+$color2: lighten($color1, 75%); //lighten color1
+$color3: #7aa228;               //Green
+$color4: lighten($color3, 30%); //lighten color3
+$color5: #7659b6;               //Purple            //From what I understand, red in a learning environment isn't always great, so I made a choice to use purple, but will follow any in house style guides. 
+$color6: lighten($color5, 30%); //lighten color5
+
 @mixin transition($property) {  
     -webkit-transition: $property;
     -moz-transition: $property;
     transition: $property;
 }
 
-//scss stub for singleselect
-.SingleSelect {
-    font-family: $font;
-    background-color: white;
-    margin: auto;
-    margin-top: 10em;
-    width: 50%;
-    max-width: 30em; //This is specific to this project to keep the buttons set up in a 2x2 formation. When removed it looks a little goofy as the buttons realign themselves into a line.
-    display: flex; //Flex boxes were new when I was moving into brewing, so I'm still figuring these out, but I like them.
+//Flex boxes were new when I was moving into brewing, so I'm still figuring these out, but I like them.
+%flex {
+    display: flex; 
     flex-direction: column;
     align-content: center;
-    justify-content: center;
+    justify-content: center
+}
+
+%position {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 html {
@@ -40,59 +43,150 @@ body {
     margin: 0;
 }
 
+//scss stub for singleselect
+.SingleSelect {
+    @extend %flex;
+    font-family: $font;
+    background-color: white;
+    margin: auto;
+    margin-top: 10em;
+    max-width: 50%; 
+    
+}
+
 .question{
     color: white;
     text-align: center;
-    background-color: $color2;
+    background-color: $color3;
     margin: auto;
     width: 100%;
-    vertical-align:middle;
     padding: 2em 0;
-    border-bottom: .2em solid $color4;
+    border-bottom: .25em solid $color4;
+
+    //Instead of wrapping h1 with another div, I'm targeting this directly since it is the only h1 child of a div with the class 'question'.
+    > h1 {
+        width: 75%;
+        display: inline-block;
+    }
 }
 
 .answerButtons {
+    @extend %flex;
+    flex-direction: row;
+    flex-grow: 0;
+    flex-wrap: wrap;
     margin: 2em auto;
-    width: 50%;
+    width: 75%;
+
 }
 
 .button {
     font-family: $font;
-    font-size: 20px;
+    font-size: 1.25em;
     padding: 1.75em 2em;
     margin: .5em;
     border: .1em solid $color1;
     color: $color1;
-    background-color: $color3;
-    display: inline;
+    background-color: $color2;
     cursor: pointer;
     @include transition($fade);
-}
-
-//Tab or click and hold through the buttons for a background change. 
-.button:focus {
-    border-radius: 0px;
-    border: .1em solid $color1;
-    outline: none;
-    background-color: $color4;
-}
-
-//With the transition properties in .answer, this creates the border animation on hover.
-.button:hover {
-    box-shadow: inset 0 0 0 .5em $color1;
+    
+    //With the transition properties in $fade, this creates the border animation on hover.
+    &:hover {
+        box-shadow: inset 0 0 0 .1em $color1;
+    }
+    
+    //Tab or click and hold through the buttons for a background change.
+    &:focus {
+        border-radius: 0px; //This is overriding the browser default focus styling for buttons.
+        border: .1em solid $color1;
+        outline: none;
+        background-color: $color6;
+        box-shadow: inset 0 0 0 .1em $color1;                   
+    }
 }
 
 .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30em;
+    max-width: 90%;
+    height: 30em;
+    max-height: 100%;
+    background: white;
     text-align: center;
-    display: flex;
-    align-content: center;
-    justify-content:center;
-    margin-bottom: 4em;
+    z-index: $zindex+1;
+
+    &.incorrect {
+        border: .2em solid $color5;
+        box-shadow: $color5 2em 2em 2em;
+        
+        //I decided to adjust the scrollbar after playing with Loren Ipsum in the modal. 
+        ::-webkit-scrollbar-thumb {
+            background-color: $color6;
+        }
+    }
+
+    &.correct {
+        border: .2em solid $color3;
+        box-shadow: 2em 2em 2em $color3;
+
+        ::-webkit-scrollbar-thumb {
+            background-color: $color4;
+        }
+    }
+
+    .button {
+        margin-top: 2em;
+    }
 }
 
-@media (max-width: 950px){
-    .SingleSelect{
-        max-width: 20em; //This keeps the buttons responsive while eliminating an awkward div size and button alignment while resizing the page.
-        margin-top: 2em;
+.modalOverlay {
+    @extend %position;
+    position: fixed;
+    opacity: .7;
+    z-index: $zindex;
+
+    &.incorrect {
+        background-color: $color6;
+    }
+
+    &.correct {
+        background-color: $color4;
+    }
+}
+
+//I used some Lorem Ipsum to make sure it can accomodate a larger answer. 
+//The first-child modifier with the justify-content: flex-start property keep the top of the content from being cut off when just using justify-content: center.
+//It's currently not in flex-start because there is no current demand for a longer string, and without that it just looks better in center.
+//As far as I can find, it is a known issue that flex containers do not handle overflow well, and this is the best workaround I can find.
+.modalContent {
+    @extend %position;
+    @extend %flex;
+    position: absolute;
+    overflow: auto;
+    //This needs to be freed to override the justify-content:center in %flex, if there is going to be enough content for overflow. 
+    /*
+        justify-content: flex-start; 
+        &:first-child {
+            margin-top: auto;
+        }
+    */
+}
+
+::-webkit-scrollbar {
+    width: .75em;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: none;    
+}
+
+//This is just removing some empty headspace on small screens, if you were to look at it on mobile.
+@media (max-width: 700px){
+    .SingleSelect{ 
+        margin: 3em auto;
     }
 }
